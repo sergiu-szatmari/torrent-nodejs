@@ -1,0 +1,34 @@
+{
+  "name": "torrent-nodejs",
+  "version": "1.0.0",
+  "description": "University project - Torrent node app that communicates with a given hub. Created using Node.js (Typescript)",
+  "main": "index.js",
+  "scripts": {
+    "compile:proto": "pbjs -t static-module -o src/models/torrent.js src/protos/torrent.proto",
+    "compile:ts": "pbts -o src/models/torrent.d.ts src/models/torrent.js",
+    "compile": "npm run compile:proto && npm run compile:ts",
+
+    "build": "npm run compile && tsc",
+    "hub": "./reference-binaries/torr-linux-386 127.0.0.1 5000 127.0.0.1 5001 5002 5003",
+    "start-nodes": "node ./build/src/index.js 127.0.0.1 5000 6001 6002 6003",
+
+    "postinstall": "npm run build",
+    "start": "npm run start-nodes"
+  },
+  "keywords": [],
+  "author": "Sergiu",
+  "license": "ISC",
+  "dependencies": {
+    "cli-color": "^2.0.0",
+    "md5": "^2.3.0",
+    "protobufjs": "^6.10.2"
+  },
+  "devDependencies": {
+    "@types/cli-color": "^2.0.0",
+    "@types/md5": "^2.2.1",
+    "@types/node": "^14.14.20",
+    "@types/protobufjs": "^6.0.0",
+    "tsc-watch": "^4.2.9",
+    "typescript": "^4.1.3"
+  }
+}

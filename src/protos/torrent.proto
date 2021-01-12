@@ -1,0 +1,160 @@
+syntax = "proto3";
+
+message NodeId {
+  string host = 1;
+  int32  port = 2;
+  string owner = 3;
+  int32 index = 4;
+}
+
+message ChunkInfo {
+  uint32 index = 1;
+  uint32 size = 2;
+  bytes hash = 3;
+}
+
+message FileInfo {
+  bytes hash = 1;
+  uint32 size = 2;
+  string filename = 3;
+  repeated ChunkInfo chunks = 4;
+}
+
+message NodeReplicationStatus {
+  NodeId node = 1;
+  uint32 chunkIndex = 2;
+  Status status = 3;
+  string errorMessage = 4;
+}
+
+message NodeSearchResult {
+  NodeId node = 1;
+  Status status = 2;
+  string errorMessage = 3;
+  repeated FileInfo files = 4;
+}
+
+message RegistrationRequest {
+  string owner = 1;
+  int32 index = 2;
+  int32 port = 3;
+}
+message RegistrationResponse {
+  Status status = 1;
+  string errorMessage = 2;
+}
+
+message SubnetRequest {
+  int32 subnetId = 1;
+}
+message SubnetResponse {
+  Status status = 1;
+  string errorMessage = 2;
+  repeated NodeId nodes = 3;
+}
+
+message LocalSearchRequest {
+  string regex = 1;
+}
+message LocalSearchResponse {
+  Status status = 1;
+  string errorMessage = 2;
+  repeated FileInfo fileInfo = 3;
+}
+
+message SearchRequest {
+  string regex = 1;
+  int32 subnetId = 2;
+}
+message SearchResponse {
+  Status status = 1;
+  string errorMessage = 2;
+  repeated NodeSearchResult results = 3;
+}
+
+message UploadRequest {
+  string filename = 1;
+  bytes  data = 2;
+}
+message UploadResponse {
+  Status status = 1;
+  string errorMessage = 2;
+  FileInfo fileInfo = 3;
+}
+
+message ReplicateRequest {
+  FileInfo fileInfo = 1;
+  int32 subnetId = 2;
+}
+message ReplicateResponse {
+  Status status = 1;
+  string errorMessage = 2;
+  repeated NodeReplicationStatus nodeStatusList = 3;
+}
+
+message ChunkRequest {
+  bytes fileHash = 1;
+  uint32 chunkIndex = 2;
+}
+message ChunkResponse {
+  Status status = 1;
+  string errorMessage = 2;
+  bytes data = 3;
+}
+
+message DownloadRequest {
+  bytes fileHash = 1;
+}
+message DownloadResponse {
+  Status status = 1;
+  string errorMessage = 2;
+  bytes data = 3;
+}
+
+message Message {
+  enum Type {
+    LOCAL_SEARCH_REQUEST = 0;
+    LOCAL_SEARCH_RESPONSE = 1;
+    SEARCH_REQUEST = 2;
+    SEARCH_RESPONSE = 3;
+    UPLOAD_REQUEST = 4;
+    UPLOAD_RESPONSE = 5;
+    REPLICATE_REQUEST = 6;
+    REPLICATE_RESPONSE = 7;
+    CHUNK_REQUEST = 8;
+    CHUNK_RESPONSE = 9;
+    DOWNLOAD_REQUEST = 10;
+    DOWNLOAD_RESPONSE = 11;
+    REGISTRATION_REQUEST = 12;
+    REGISTRATION_RESPONSE = 13;
+    SUBNET_REQUEST = 14;
+    SUBNET_RESPONSE = 15;
+  }
+
+  Type type = 1;
+
+  LocalSearchRequest localSearchRequest = 2;
+  LocalSearchResponse localSearchResponse = 3;
+  SearchRequest searchRequest = 4;
+  SearchResponse searchResponse = 5;
+  UploadRequest uploadRequest = 6;
+  UploadResponse uploadResponse = 7;
+  ReplicateRequest replicateRequest = 8;
+  ReplicateResponse replicateResponse = 9;
+  ChunkRequest chunkRequest = 10;
+  ChunkResponse chunkResponse = 11;
+  DownloadRequest downloadRequest = 12;
+  DownloadResponse downloadResponse = 13;
+  RegistrationRequest registrationRequest = 14;
+  RegistrationResponse registrationResponse = 15;
+  SubnetRequest subnetRequest = 16;
+  SubnetResponse subnetResponse = 17;
+}
+
+enum Status {
+  SUCCESS = 0;
+  UNABLE_TO_COMPLETE = 1;
+  MESSAGE_ERROR = 2;
+  NETWORK_ERROR = 3;
+  PROCESSING_ERROR = 4;
+}
