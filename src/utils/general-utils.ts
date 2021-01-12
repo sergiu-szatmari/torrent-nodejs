@@ -46,7 +46,7 @@ export class Utils {
         if (Constants.LOG_INFO) {
             console.info = function () {
                 const args = Array.from(arguments);
-                args.unshift(yellow(`[ ${ Constants.OWNER }-${ processIdx }`));
+                args.unshift(yellow(`[ ${ Constants.OWNER }-${ processIdx } ]`));
                 log.apply(console, args);
             };
         } else {

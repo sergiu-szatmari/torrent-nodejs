@@ -7,9 +7,7 @@ import { Utils } from '../utils/general-utils';
 
 export class ChunkHandler extends RequestHandler {
 
-    constructor(app: Application) {
-        super(app, Message.Type.CHUNK_REQUEST);
-    }
+    constructor(app: Application) { super(app, Message.Type.CHUNK_REQUEST); }
 
 
     async handle(message: Message, socket: Socket): Promise<void> {
@@ -37,19 +35,12 @@ export class ChunkHandler extends RequestHandler {
                 if (!Utils.hashMatch(file.fileInfo.hash, fileHash)) continue;
 
                 const foundChunk = file.chunks.find(chunk => chunk.index === chunkIndex);
-                if (!foundChunk) {
-                    await sendResponse({
-                        status: Status.UNABLE_TO_COMPLETE,
-                        errorMessage: 'Chunk not found',
-                    });
-                    return;
-                } else {
-                    await sendResponse({
-                        status: Status.SUCCESS,
-                        data: foundChunk.data,
-                    });
-                    return;
-                }
+
+                const response = !foundChunk ?
+                    { status: Status.UNABLE_TO_COMPLETE, errorMessage: 'Chunk not found', } :
+                    { status: Status.SUCCESS, data: foundChunk.data, };
+                await sendResponse(response);
+                return;
             }
 
             await sendResponse({

@@ -3,13 +3,10 @@ import { Application } from '../application';
 import { IFileInfo, ILocalSearchResponse, Message, Status } from '../models/torrent';
 import { Socket } from 'net';
 import { NetworkSender } from '../network/network-sender';
-import { FileData } from '../models/app-model';
 
 export class LocalSearchHandler extends RequestHandler {
 
-    constructor(app: Application) {
-        super(app, Message.Type.LOCAL_SEARCH_REQUEST);
-    }
+    constructor(app: Application) { super(app, Message.Type.LOCAL_SEARCH_REQUEST); }
 
 
     async handle(message: Message, socket: Socket): Promise<void> {
@@ -40,9 +37,7 @@ export class LocalSearchHandler extends RequestHandler {
             console.info(`[ LocalSearchRequest ] Searching locally using regex "${ localSearchRequest.regex }"`);
             const foundFiles: IFileInfo[] = [];
             this.app.files.forEach((file) => {
-                if (regex.test(file.fileInfo.filename!)) {
-                    foundFiles.push(file.fileInfo);
-                }
+                if (regex.test(file.fileInfo.filename!)) foundFiles.push(file.fileInfo);
             });
 
             await sendResponse({

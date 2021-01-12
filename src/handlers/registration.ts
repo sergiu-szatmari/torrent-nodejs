@@ -6,9 +6,7 @@ import { NetworkSender } from '../network/network-sender';
 
 export class RegistrationHandler extends RequestHandler {
 
-    constructor(app: Application) {
-        super(app, Message.Type.REGISTRATION_REQUEST);
-    }
+    constructor(app: Application) { super(app, Message.Type.REGISTRATION_REQUEST); }
 
     async handle(message: Message, socket?: Socket): Promise<void> {
         try {

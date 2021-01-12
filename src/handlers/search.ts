@@ -1,16 +1,13 @@
 import { RequestHandler } from './request-handler';
 import { Application } from '../application';
-import { IFileInfo, INodeId, INodeSearchResult, ISearchResponse, Message, Status } from '../models/torrent';
+import { IFileInfo, INodeSearchResult, ISearchResponse, Message, Status } from '../models/torrent';
 import { Socket } from 'net';
 import { NetworkSender } from '../network/network-sender';
 import { Constants } from '../utils/constants';
-import { FileData } from '../models/app-model';
 
 export class SearchHandler extends RequestHandler {
 
-    constructor(app: Application) {
-        super(app, Message.Type.SEARCH_REQUEST);
-    }
+    constructor(app: Application) { super(app, Message.Type.SEARCH_REQUEST); }
 
 
     async handle(message: Message, socket: Socket): Promise<void> {

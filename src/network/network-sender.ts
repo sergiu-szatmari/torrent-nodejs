@@ -50,7 +50,6 @@ export class NetworkSender {
                     }
                 });
 
-                // TODO: What is this ???
                 const toWrite = Buffer.concat([ contentLength, bytes ]);
                 client.write(toWrite);
             });

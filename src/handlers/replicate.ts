@@ -1,6 +1,6 @@
 import { RequestHandler } from './request-handler';
 import { Application } from '../application';
-import { IChunkInfo, INodeId, INodeReplicationStatus, IReplicateResponse, Message, Status } from '../models/torrent';
+import { INodeReplicationStatus, IReplicateResponse, Message, Status } from '../models/torrent';
 import { Socket } from 'net';
 import { NetworkSender } from '../network/network-sender';
 import { ChunkData, FileData } from '../models/app-model';
@@ -8,10 +8,7 @@ import { Constants } from '../utils/constants';
 
 export class ReplicateHandler extends RequestHandler {
 
-    constructor(app: Application) {
-        super(app, Message.Type.REPLICATE_REQUEST);
-    }
-
+    constructor(app: Application) { super(app, Message.Type.REPLICATE_REQUEST); }
 
     async handle(message: Message, socket: Socket): Promise<void> {
         // Helper function to send response back to hub

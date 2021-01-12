@@ -9,9 +9,7 @@ import { NetworkSender } from '../network/network-sender';
 
 export class UploadHandler extends RequestHandler {
 
-    constructor(app: Application) {
-        super(app, Message.Type.UPLOAD_REQUEST);
-    }
+    constructor(app: Application) { super(app, Message.Type.UPLOAD_REQUEST); }
 
     getFileData(filename: string, data: DataType): FileData {
         const hash = Utils.hash(data);

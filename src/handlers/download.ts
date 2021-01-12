@@ -7,10 +7,7 @@ import { Utils } from '../utils/general-utils';
 
 export class DownloadHandler extends RequestHandler {
 
-    constructor(app: Application) {
-        super(app, Message.Type.DOWNLOAD_REQUEST);
-    }
-
+    constructor(app: Application) { super(app, Message.Type.DOWNLOAD_REQUEST); }
 
     async handle(message: Message, socket: Socket): Promise<void> {
         // Helper function to send response back to hub
@@ -35,33 +32,27 @@ export class DownloadHandler extends RequestHandler {
         console.info(`[ DownloadRequest ] Download file request`);
 
         for (const file of this.app.files.values()) {
-            if (Utils.hashMatch(file.fileInfo.hash, fileHash)) {
-                // Concat chunks into one file
-                const orderedChunks = file.chunks
-                    .sort((c1, c2) => c1.index - c2.index)
-                    .map(c => c.data);
-                const data = new Uint8Array(file.fileInfo.size!);
-                let offset = 0;
+            if (!Utils.hashMatch(file.fileInfo.hash, fileHash)) continue;
 
-                // TODO ?
-                // orderedChunks.forEach(chunk => {
-                //     if (chunk?.length === 0) return;
-                //     data.set(chunk!, offset);
-                //     offset += chunk!.length;
-                // })
-                for (const chunk of orderedChunks) {
-                    if (chunk?.length === 0) continue;
-                    data.set(chunk!, offset);
-                    offset += chunk!.length;
-                }
+            // Concat chunks into one file
+            const orderedChunks = file.chunks
+                .sort((c1, c2) => c1.index - c2.index)
+                .map(c => c.data);
+            const data = new Uint8Array(file.fileInfo.size!);
+            let offset = 0;
 
-                console.info(`[ DownloadRequest ] Found file "${ file.fileInfo.filename }"`);
-                await sendResponse({
-                    status: Status.SUCCESS,
-                    data
-                });
-                return;
-            }
+            orderedChunks.forEach(chunk => {
+                if (chunk?.length === 0) return;
+                data.set(chunk!, offset);
+                offset += chunk!.length;
+            });
+
+            console.info(`[ DownloadRequest ] Found file "${ file.fileInfo.filename }"`);
+            await sendResponse({
+                status: Status.SUCCESS,
+                data
+            });
+            return;
         }
 
         // The file does not exist on this node
