@@ -9,7 +9,6 @@ export class SearchHandler extends RequestHandler {
 
     constructor(app: Application) { super(app, Message.Type.SEARCH_REQUEST); }
 
-
     async handle(message: Message, socket: Socket): Promise<void> {
         // Helper function to send response back to nodes
         const sendResponse = async (response: ISearchResponse) => {

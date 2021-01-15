@@ -1,6 +1,4 @@
-# torrent-nodejs
-University project - Torrent node app that communicates with a given binary hub. Created using Node.js (Typescript)
+# Torrent-like system
+University project - Torrent node app that communicates with a given hub. Protobuf specs given. 
 
-Logs:
-[Hub](./log/ref.log)
-[App](./log/srg.log)
+Created using Node.js (Typescript)
